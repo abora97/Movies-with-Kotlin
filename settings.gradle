@@ -1,0 +1,2 @@
+rootProject.name='Movies-with-Kotlin'
+include ':app'
