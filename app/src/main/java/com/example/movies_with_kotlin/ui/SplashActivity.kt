@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movies_with_kotlin.R
+import com.example.movies_with_kotlin.ui.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
