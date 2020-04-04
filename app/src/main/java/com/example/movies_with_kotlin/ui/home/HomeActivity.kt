@@ -3,6 +3,8 @@ package com.example.movies_with_kotlin.ui.home
 import PopularResponse
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,33 +28,60 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         title = "Home"
 
-        getDataFromApi()
 
+//        getPopularMovie()
+        getTopRated()
     }
 
-    private fun getDataFromApi() {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.home_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuPopular-> {
+                getPopularMovie()
+            }
+            R.id.menuTopRated->{
+                getTopRated()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun getPopularMovie() {
 
         val apiService: APIInterface = ApiClient.getClient()!!.create(APIInterface::class.java)
 
-
         val call: Call<PopularResponse> = apiService.getPopular(API_KEY_VALUE, "en", 1)
+        getDataFromApi(call)
+    }
 
 
+    private fun getTopRated() {
+
+        val apiService: APIInterface = ApiClient.getClient()!!.create(APIInterface::class.java)
+
+        val call: Call<PopularResponse> = apiService.getTopRated(API_KEY_VALUE, "en", 1)
+        getDataFromApi(call)
+    }
+
+
+
+
+    private fun getDataFromApi(call: Call<PopularResponse>) {
         call.enqueue(object : Callback<PopularResponse> {
             override fun onResponse(
                 call: Call<PopularResponse>,
                 response: Response<PopularResponse>
             ) {
-
-
                 initRecycle()
-
 //                movieAdapter?.setList(response.body()?.results)
                 movieAdapter?.setList(response.body()?.results!!)
                 response.body()?.results?.let { movieAdapter?.setList(it) }
-
-
-
             }
 
             override fun onFailure(
@@ -64,6 +93,7 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
+
 
     private fun initRecycle() {
         movieAdapter = MovieAdapter()
