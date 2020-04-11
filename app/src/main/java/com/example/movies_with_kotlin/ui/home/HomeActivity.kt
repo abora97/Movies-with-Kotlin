@@ -1,17 +1,18 @@
 package com.example.movies_with_kotlin.ui.home
 
-import PopularResponse
+
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies_with_kotlin.R
 import com.example.movies_with_kotlin.api.APIInterface
 import com.example.movies_with_kotlin.api.ApiClient
+import PopularResponse
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies_with_kotlin.util.Constants.API_KEY_VALUE
 import kotlinx.android.synthetic.main.activity_home.*
 import retrofit2.Call
@@ -29,27 +30,11 @@ class HomeActivity : AppCompatActivity() {
         title = "Home"
 
 
-//        getPopularMovie()
-        getTopRated()
+        getPopularMovie()
+//        getTopRated()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.home_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.menuPopular-> {
-                getPopularMovie()
-            }
-            R.id.menuTopRated->{
-                getTopRated()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
 
     private fun getPopularMovie() {
@@ -96,15 +81,34 @@ class HomeActivity : AppCompatActivity() {
 
 
     private fun initRecycle() {
-        movieAdapter = MovieAdapter()
+        movieAdapter = MovieAdapter(applicationContext)
         rec.layoutManager = getLayoutManager()
         rec.adapter = movieAdapter
     }
 
     private fun getLayoutManager(): RecyclerView.LayoutManager? {
         if (movieLayoutManager == null) {
-            movieLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            movieLayoutManager = GridLayoutManager(this, 2)
         }
         return movieLayoutManager
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.home_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuPopular-> {
+                getPopularMovie()
+            }
+            R.id.menuTopRated->{
+                getTopRated()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

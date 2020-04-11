@@ -1,21 +1,26 @@
 package com.example.movies_with_kotlin.ui.home
 
 import PopularData
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.movies_with_kotlin.R
+import com.example.movies_with_kotlin.ui.DetailActivity
 import com.example.movies_with_kotlin.util.Constants.BASE_IMAGE_URL
+import com.example.movies_with_kotlin.util.Constants.MOVIE_DATA
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_movie.view.*
 import java.util.*
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
+class MovieAdapter(context: Context) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+
+    private val context: Context? = context
     private var list: List<PopularData>
 
     override fun onCreateViewHolder(
@@ -39,6 +44,20 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
             .into(holder.itemView.itemImage)
 
 
+
+        holder.itemView.itemLay.setOnClickListener {
+
+            // start detailsActivity and move data using bundle
+            val intent = Intent(this.context, DetailActivity::class.java)
+            val bundle = Bundle()
+
+          //  bundle.putParcelable(MOVIE_DATA, list[position])
+            bundle.putString(MOVIE_DATA,Gson().toJson(list[position]))
+            intent.putExtras(bundle)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context!!.startActivity(intent)
+
+        }
 
     }
 
