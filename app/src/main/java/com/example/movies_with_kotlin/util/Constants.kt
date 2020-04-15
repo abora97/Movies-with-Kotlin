@@ -16,6 +16,8 @@ object Constants {
     const val PAGE_KEY = "page"
     const val MOVIE_LANGUAGE = "language"
 
+    const val MOVIE_DATA="MOVIE_DATA"
+
     const val MOVIE_EXTRA = "movies_extra"
     const val FAV_MOVIE = "fav_movie"
 
